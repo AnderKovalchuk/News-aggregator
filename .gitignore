@@ -1,3 +1,6 @@
+# Config
+.vscode
+
 # Logs
 logs
 *.log
