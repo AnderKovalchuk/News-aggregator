@@ -5,5 +5,6 @@ export class CreateCategoryDto {
   sign: string;
   comment?: string;
   parent?: number;
+  children?: number[];
   status?: CategoryStatus;
 }

@@ -1,94 +1,121 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Category } from './entities/category.entity';
+import { NewsCategory } from './entities/category.entity';
 import { CategoryStatus } from './entities/category-status.enum';
 import { EditCategoryDto } from './dto/edit-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { getManager, Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
-  private readonly categories: Category[] = [
-    {
-      id      : 0,
-      title   : "Без категории",
-      sign    : " ",
-      status  : CategoryStatus.publish,
-    }, {
-      id      : 1,
-      title   : "Строительство",
-      sign    : "building",
-      status  : CategoryStatus.publish,
-    }, {
-      id      : 2,
-      title   : "Ремонт",
-      sign    : "repair",
-      status  : CategoryStatus.publish,
-    }
-  ];
+  constructor(
+    @InjectRepository(NewsCategory)
+    private categories: Repository<NewsCategory>,
+  ) { }
+  // private readonly categories: NewsCategory[] = [
+  //   {
+  //     id      : 0,
+  //     title   : "Без категории",
+  //     sign    : " ",
+  //     status  : CategoryStatus.publish,
+  //   }, {
+  //     id      : 1,
+  //     title   : "Строительство",
+  //     sign    : "building",
+  //     status  : CategoryStatus.publish,
+  //   }, {
+  //     id      : 2,
+  //     title   : "Ремонт",
+  //     sign    : "repair",
+  //     status  : CategoryStatus.publish,
+  //   }
+  // ];
 
-  getAll(): Category[] {
-    return this.categories;
+  getAll(): Promise<NewsCategory[]> {
+    return this.categories.find();
+  }
+  async getAllAsTree(): Promise<NewsCategory[]> {
+    const manager = getManager();
+    return await manager.getTreeRepository(NewsCategory).findTrees();
+  }
+  async getAllAsRoot(): Promise<NewsCategory[]> {
+    const manager = getManager();
+    return await manager.getTreeRepository(NewsCategory).findRoots();
   }
 
-  getById( id: number ): Category {
-    const category = this.categories.find( category => category.id == id );
-    if( category )
-      return category;
-    throw new HttpException( "Запись не найдено", HttpStatus.NOT_FOUND );
+  async getById( 
+    id: number
+  ): Promise<NewsCategory> {
+    const category = await this.categories.findOne( id );
+    
+    if( !category || category === undefined )
+      throw new HttpException( "Запись не найдено", HttpStatus.NOT_FOUND );
+    console.log( "cat: " + category );
+    return category;
   }
 
-  getBySign( sign: string ): Category {
-    const category = this.categories.find( category => category.sign === sign.trim() );
+  async getBySign( sign: string ): Promise<NewsCategory> {
+    const category = await this.categories.findOne( {
+      where: { sign }
+    } );
     if( !category )
       throw new HttpException( "Запись не найдено", HttpStatus.NOT_FOUND );
     return category;
   }
 
-  add( newCategory: CreateCategoryDto ) {
-    const sign = this.categories.find( category => category.sign === newCategory.sign.trim() );
-    if( sign ) {
+  async add( newCategory: CreateCategoryDto ): Promise<NewsCategory> {
+    const sign = await this.categories.find( {
+      where: { 
+        sign: newCategory.sign.trim(),
+        // parent: newCategory.parent || 0,
+      }
+    } );
+    if( sign.length > 0 ) {
       throw new HttpException( "Запись уже существует", HttpStatus.NOT_IMPLEMENTED );
     }
 
-    const category: Category = {
-      id: this.categories.length + 1,
-      title: newCategory.title,
-      sign: newCategory.sign,
-      comment: newCategory.comment || "",
-      parent: newCategory.parent || 0,
-      status: newCategory.status || CategoryStatus.draft,
+    const category = new NewsCategory();
+    category.title = newCategory.title;
+    category.sign = newCategory.sign;
+    category.comment = newCategory.comment || "";
+    if( newCategory.parent ) {
+      category.parent = await this.getById( newCategory.parent );
     }
+    category.status = newCategory.status || CategoryStatus.draft;
 
-    this.categories.push(category);
-    return category;
+    return await this.categories.save(category);
   }
 
-  delete( id: number ): Category {
-    const index = this.categories.findIndex(n => n.id == id);
-    console.log(index);
-    if (index !== -1) {
-      return this.categories.splice(index, 1)[0];
-    } else {
-      throw new HttpException( "Запись не найдено", HttpStatus.NOT_MODIFIED );
-    }
+  async delete( id: number ): Promise<void> {
+    const res = await this.categories.delete( id ) ;
+    console.log(res);
+    // const index = this.categories.findIndex(n => n.id == id);
+    // console.log(index);
+    // if (index !== -1) {
+    //   return this.categories.splice(index, 1)[0];
+    // } else {
+    //   throw new HttpException( "Запись не найдено", HttpStatus.NOT_MODIFIED );
+    // }
   }
 
-  edit(
+  async edit(
     id: number,
     newCategory: EditCategoryDto,
-  ): Category {
-    let category: Category;
+  ): Promise<NewsCategory> {
+    let category: NewsCategory;
     console.log(newCategory);
     try{
-      category =  this.getById(id);
+      category =  await this.getById( id );
+      console.log( category );
     } catch(e) {
-      throw new HttpException( "Запись не найдено", HttpStatus.NOT_MODIFIED );
+      throw e;
     }
 
     for (var key in newCategory) {
       category[key] = newCategory[key];
     }
 
-    return category;
+    return await this.categories.save(category);
   }
 
 }

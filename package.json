@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/AnderKovalchuk/News-aggregator/issues"
   },
-  "homepage": "https://github.com/AnderKovalchuk/News-aggregator#readme"
+  "homepage": "https://github.com/AnderKovalchuk/News-aggregator#readme",
+  "dependencies": {
+    "@nestjs/typeorm": "^7.1.0",
+    "mysql": "^2.18.1",
+    "typeorm": "^0.2.25"
+  }
 }
