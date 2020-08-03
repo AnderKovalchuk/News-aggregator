@@ -5,6 +5,7 @@ import { parse } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { NewsSourcesModule } from './news/news-sources/news-sources.module';
 import { NewsModule } from './news/news.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { NewsModule } from './news/news.module';
       autoLoadEntities: true,
     }),
     NewsModule,
+    NewsSourcesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

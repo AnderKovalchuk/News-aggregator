@@ -28,26 +28,6 @@ export class NewsCategory {
 
   @TreeParent()
   parent: NewsCategory;
-  // @OneToMany(
-  //   type => NewsCategory, 
-  //   parentCategory => parentCategory.id, 
-  //   {
-  //     eager: true,
-  //   }
-  // )
-  // @JoinColumn(
-  //   { name: "parent_id" }
-  // )
-  // parent?: NewsCategory;
-
-  // @ManyToOne(
-  //   type => NewsCategory,
-  //   children => children.parent,
-  //   {
-  //     cascade: true,
-  //   }
-  // )
-  // children?: NewsCategory[];
 
   @CreateDateColumn()
   createDate?: any;
