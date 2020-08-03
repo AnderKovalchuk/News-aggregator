@@ -4,15 +4,18 @@ export const categoriesListFields = [
     key: 'title',
     label: 'Название',
   }, {
-    key: 'sing',
+    key: 'sign',
     label: 'Ссылка',
-  }, {
-    key: 'parent',
-    label: 'Родительская категория',
   }, {
     key: 'status',
     label: 'Статус',
-  },
+  }, {
+    key: 'children',
+    label: 'Подкатегории',
+  }, {
+    key: 'comment',
+    label: 'Комментарий',
+  }
 ]
 
 export const testDate = [

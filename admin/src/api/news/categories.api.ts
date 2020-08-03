@@ -1,7 +1,7 @@
 import { SERVER_ADDRESS } from "../api-dictionary";
 
 export const fetchCategories = () => {
-  return fetch( `${SERVER_ADDRESS}/news/categories/` )
+  return fetch( `${SERVER_ADDRESS}/news/categories?type=tree` )
           .then( res => res.json() );
 }
 

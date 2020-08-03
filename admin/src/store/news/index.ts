@@ -3,26 +3,30 @@ import { ICategory } from './../../api/interfaces/news/categories';
 import { NewsAction } from './action-dictionary';
 
 export interface NewsState {
-  categoriesList: ICategory[]
+  categoriesTree: ICategory[],
+  currentCategory: number,
+  path?: number[],
 }
 
 const initialState: NewsState = {
-  categoriesList: [],
+  categoriesTree: [],
+  currentCategory: 0,
 };
 
 export const newsReducer = (
   state: NewsState = initialState,
   action: any
 ) => {
-
   switch(action.type){
     case NewsAction.PUT_CATEGORIES:
-      console.log(action);
       return {
         ...state,
-        categoriesList: action.data
+        categoriesTree: action.data
       };
+    case NewsAction.GO_TO_CATEGORY: 
+      
     default:
       return state;
   }
 }
+
