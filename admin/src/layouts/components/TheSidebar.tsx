@@ -12,12 +12,10 @@ import {
   CSidebarNavItem,
 } from '@coreui/react'
 
-import CIcon from '@coreui/icons-react'
-
 import navigation from '../_nav'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
-import { changeSidebar } from '../../store/system/sidebar'
+import { changeSidebar } from '../../actions/system'
 
 const TheSidebar = () => {
   const dispatch = useDispatch()

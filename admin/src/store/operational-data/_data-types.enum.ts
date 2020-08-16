@@ -1,0 +1,5 @@
+export enum ODDataTypes {
+  UN_ACTIVE = "UN_ACTIVE",
+  NEWS_SOURCE = "NEWS_SOURCE",
+  CATEGORY = "CATEGORY",
+}

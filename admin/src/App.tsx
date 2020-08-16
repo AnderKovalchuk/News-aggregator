@@ -1,6 +1,7 @@
 import React from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { Route, Router, Switch } from 'react-router-dom';
 import TheLayout from './layouts/TheLayout';
+import { createBrowserHistory } from 'history';
 
 
 const loading = (
@@ -9,9 +10,11 @@ const loading = (
   </div>
 )
 
+export const history = createBrowserHistory();
+
 export const App = () => {
   return (
-    <HashRouter>
+    <Router history={ history }>
       <React.Suspense fallback={ loading }>
         <Switch>
           {/* <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
@@ -25,7 +28,7 @@ export const App = () => {
           />
         </Switch>
       </React.Suspense>
-    </HashRouter>
+    </Router>
   );
 }
 

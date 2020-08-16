@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import { newsReducer } from "../news";
-import { systemReducer } from "../system/system-reducer";
+import { operationalDataReducer } from "../operational-data";
+import { systemReducer } from "../system";
 
 export const rootReducer = combineReducers({
   system: systemReducer,
-  news: newsReducer,
+  operation: operationalDataReducer,
 });

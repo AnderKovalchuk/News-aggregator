@@ -1,43 +1,46 @@
-import React, { Component, useEffect } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { CBadge, CButton, CButtonGroup, CCard, CCardBody, CCardHeader, CDataTable, CLink } from '@coreui/react';
-import CIcon from '@coreui/icons-react';
+import {
+  CBadge,
+  CButton,
+  CButtonGroup,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CDataTable
+} from '@coreui/react';
 
-import { categoriesListFields, testDate } from './tables-fields/categories-list-fields';
-import { loadCategories } from '../../store/news/load-categories';
 import { RootState } from '../../store/store';
-import { CategoryStatus, ICategory } from '../../api/interfaces/news/categories';
-
+import { ECategoryStatus, ICategory } from '../../entities/news-category';
+import { ODDataTypes } from '../../store/operational-data';
+import { changeSection } from '../../actions/operational-data';
 
 
 const CategoriesList : React.FC = (  ) => {
   const dispatch = useDispatch();
-  const categoriesData = useSelector( (state: RootState ) => state.news.categoriesList );
-  useEffect(() => {
-    dispatch( loadCategories() )
-    console.log(categoriesData);
-    // loadCategoriesList();
-  }, [])
-  // const dispatch = useDispatch();
-  // dispatch( loadCategories() );
-  // const categoriesData = useSelector( (state: RootState ) => state.news.categoriesList );
+  const categoriesData = useSelector( (state: RootState ) => state.operation.dataStore);
 
-  const getBadgeColor = (status: CategoryStatus): string => {
+  const tableFields = useSelector( (state: RootState ) => state.operation.tableFields );
+  useEffect(() => {
+    dispatch( changeSection( ODDataTypes.CATEGORY ) )
+  }, [])
+
+  const getBadgeColor = (status: ECategoryStatus): string => {
     switch (status) {
-      case CategoryStatus.publish : return 'success'
-      case CategoryStatus.draft   : return 'warning'
-      case CategoryStatus.inactive: return 'secondary'
-      case CategoryStatus.deleted : return 'danger'
+      case ECategoryStatus.publish : return 'success'
+      case ECategoryStatus.draft   : return 'warning'
+      case ECategoryStatus.inactive: return 'secondary'
+      case ECategoryStatus.deleted : return 'danger'
       default: return 'primary'
     }
   }
-  const getBadgeName = (status: CategoryStatus): string => {
+  const getBadgeName = (status: ECategoryStatus): string => {
     switch (status) {
-      case CategoryStatus.publish : return 'Опубликовано'
-      case CategoryStatus.draft   : return 'Черновик'
-      case CategoryStatus.inactive: return 'Не активная'
-      case CategoryStatus.deleted : return 'Удалена'
+      case ECategoryStatus.publish : return 'Опубликовано'
+      case ECategoryStatus.draft   : return 'Черновик'
+      case ECategoryStatus.inactive: return 'Не активная'
+      case ECategoryStatus.deleted : return 'Удалена'
       default: return 'primary'
     }
   }
@@ -85,7 +88,7 @@ const CategoriesList : React.FC = (  ) => {
         </CCardHeader>
         <CCardBody>
           <CDataTable
-            fields= { categoriesListFields }
+            fields= { tableFields }
             items= { categoriesData }
             border = { false }
             size = "md"
@@ -114,16 +117,4 @@ const CategoriesList : React.FC = (  ) => {
   )
 };
 
-const mapStateToProps = (state: RootState): any => {
-  // useDispatch loadCategories();
-  return {
-    categoriesData: state.news.categoriesList
-  }
-}
-const mapDispatchToProps = (dispatch: any): any => {
-  return {
-    loadCategoriesList: () => dispatch( loadCategories() )
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CategoriesList);
+export default CategoriesList;

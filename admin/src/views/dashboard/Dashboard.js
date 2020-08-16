@@ -1,23 +1,23 @@
-import React, { lazy } from 'react'
-import {
-  CBadge,
-  CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
-  CCallout
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+import React from 'react'
+// import {
+//   CBadge,
+//   CButton,
+//   CButtonGroup,
+//   CCard,
+//   CCardBody,
+//   CCardFooter,
+//   CCardHeader,
+//   CCol,
+//   CProgress,
+//   CRow,
+//   CCallout
+// } from '@coreui/react'
+// import CIcon from '@coreui/icons-react'
 
 const Dashboard = () => {
   return (
     <>
-      <CCard>
+      {/* <CCard>
         <CCardBody>
           <CRow>
             <CCol sm="5">
@@ -100,8 +100,8 @@ const Dashboard = () => {
         </CCardFooter>
       </CCard>
 
-      <CRow>
-        <CCol>
+      <CRow> */}
+        {/* <CCol>
           <CCard>
             <CCardHeader>
               Traffic {' & '} Sales
@@ -540,7 +540,7 @@ const Dashboard = () => {
             </CCardBody>
           </CCard>
         </CCol>
-      </CRow>
+      </CRow> */}
     </>
   )
 }

@@ -20,5 +20,14 @@
   "bugs": {
     "url": "https://github.com/AnderKovalchuk/News-aggregator/issues"
   },
-  "homepage": "https://github.com/AnderKovalchuk/News-aggregator#readme"
+  "homepage": "https://github.com/AnderKovalchuk/News-aggregator#readme",
+  "dependencies": {
+    "@types/react-router-redux": "^5.0.18",
+    "react-router": "^5.2.0",
+    "react-router-redux": "^4.0.8",
+    "redux-devtools-extension": "^2.13.8"
+  },
+  "devDependencies": {
+    "@types/query-string": "^6.3.0"
+  }
 }

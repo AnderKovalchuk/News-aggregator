@@ -1,14 +1,15 @@
-import React, { Suspense } from 'react'
+import React, { Suspense } from 'react';
+import routes from '../../routes';
 import {
   Redirect,
   Route,
   Switch
 } from 'react-router-dom'
-import { CContainer, CFade } from '@coreui/react'
+import {
+  CContainer,
+  CFade
+} from '@coreui/react'
 
-import routes from '../../routes'
-
-  
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -28,7 +29,7 @@ const TheContent = () => {
                   path={route.path}
                   exact={route.exact}
                   // name={route.name}
-                  render={ props => (
+                  render={ (props) => (
                     <CFade>
                       <route.component />
                     </CFade>
